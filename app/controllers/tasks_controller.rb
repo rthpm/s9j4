@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-before_action :authenticate_user!
+  before_action :authenticate_user!
   def new
     @categories = Category.all
   end
@@ -8,26 +8,22 @@ before_action :authenticate_user!
     @task = Task.new(task_params)
     @category = Category.find(category_params)
     @task.category = @category
-    if @task.save
-      redirect_to root_path
-      flash[:notice] = "Task created"
-    else
-      redirect_to root_path
-      flash[:notice] = "Please try again"
+    respond_to do |format|
+      format.html { redirect_to root_path }
+      format.js {}
     end
   end
 
   def edit
     @task = Task.find(params[:id])
     @categories = Category.all
-
   end
 
   def update
     @task = Task.find(params[:id])
     @task.update(task_params)
     redirect_to tasks_path
-    flash[:notice] = "Task edited"
+    flash[:notice] = 'Task edited'
   end
 
   def index
@@ -40,7 +36,6 @@ before_action :authenticate_user!
     redirect_to root_path
   end
 
-
   private
 
   def task_params
@@ -50,5 +45,4 @@ before_action :authenticate_user!
   def category_params
     params.require(:Category)
   end
-
 end
